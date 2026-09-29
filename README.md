@@ -1,6 +1,45 @@
+```markdown
 # Dynamic GPU Passthrough Setup (KVM/Libvirt)
 
 This repository contains automated installation scripts and template files to set up dynamic single/dual-GPU passthrough on Linux (specifically CachyOS / Arch / Fedora with KDE Plasma Wayland).
+
+---
+
+## ⚙️ Prerequisites & Kernel Parameters (Limine / Bootloader)
+
+For VFIO device assignment to work properly, IOMMU must be explicitly enabled in your bootloader kernel parameters.
+
+### Enabling IOMMU in Limine Bootloader
+
+If your system uses **Limine** (common in CachyOS), configure the kernel command line parameters:
+
+1. Locate your Limine configuration file:
+   ```bash
+   sudo micro /boot/limine.conf
+
+```
+
+*(Note: If using systemd-boot or GRUB, edit `/boot/loader/entries/` or `/etc/default/grub` respectively).*
+
+2. Append the required IOMMU parameters to your kernel command line (`cmdline:` or `kernel_cmdline:`):
+* For **Intel CPUs**: `intel_iommu=on iommu=pt`
+* For **AMD CPUs**: `amd_iommu=on iommu=pt`
+
+
+*Example line:*
+```text
+cmdline: boot=UUID=... quiet splash intel_iommu=on iommu=pt
+
+```
+
+
+3. Ensure VFIO modules are loaded at boot:
+```bash
+echo -e "vfio\nvfio_pci\nvfio_iommu_type1" | sudo tee /etc/modules-load.d/vfio.conf
+
+```
+
+
 
 ---
 
@@ -9,7 +48,9 @@ This repository contains automated installation scripts and template files to se
 Before running `sudo ./install.sh`, inspect your system hardware to fill in the variables inside `install.sh`.
 
 ### 1. Identify GPU PCI Addresses (`PASSTHROUGH_GPU_PCI`)
+
 Run the following command to list all graphics cards:
+
 ```bash
 lspci -nn | grep -iE "vga|3d|display"
 
@@ -73,6 +114,16 @@ pci-0000:03:00.0-card -> ../card0   # Passthrough dGPU
 
 ---
 
+## 🖥️ Mouse & Keyboard Sharing Across Displays (Deskflow)
+
+When using the physical display output of the passthrough GPU connected to a second monitor, you can use **Deskflow** to seamlessly share your mouse, keyboard, and clipboard across Linux and Windows as if it were an extended multi-monitor desktop setup.
+
+* **Linux Host:** Run Deskflow as a Server.
+* **Windows VM:** Run Deskflow as a Client pointing to the host's local IP or bridge interface.
+* **UAC / Secure Desktop Fix:** In Windows, install Deskflow as a Windows Service to maintain mouse control during Administrator/UAC prompts.
+
+---
+
 ## 🚀 Installation Command
 
 Make `install.sh` executable and run it with `sudo`:
@@ -83,4 +134,8 @@ sudo ./install.sh
 
 ```
 
-After installation completes, **reboot your PC once** to ensure KDE Plasma loads the updated `/etc/environment` DRM device order.
+After installation completes, **reboot your PC once** to ensure KDE Plasma loads the updated `/etc/environment` DRM device order and IOMMU kernel parameters.
+
+```
+
+```

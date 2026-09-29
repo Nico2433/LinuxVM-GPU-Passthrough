@@ -15,7 +15,7 @@ echo "=== VFIO Single-dGPU Passthrough Installer ==="
 echo "Target User: $SUDO_USER_NAME (UID: $USER_UID)"
 
 # --- 1. User & Hardware Configuration Variables ---
-VM_NAME="win11"
+VM_NAME="test"
 
 # GPU Hardware Configuration
 PASSTHROUGH_GPU_PCI="0000:03:00"   # PCI Address (domain:bus:slot) of the GPU for the VM
@@ -29,7 +29,7 @@ PASSTHROUGH_DISPLAY_CARD="card0"  # Passthrough dGPU DRM card
 # Virtual Machine Resources
 VM_RAM_KIB="16777216"             # 16 GB RAM in KiB
 VM_VCPUS="4"                      # Number of allocated CPU cores
-VM_DISK_PATH="/mnt/extra/images/win11.qcow2"
+VM_DISK_PATH="/mnt/extra/images/test.qcow2"
 VM_ISO_PATH="/mnt/extra/images/win11_ltsc.iso"
 
 # Extract PCI bus and slot values for XML template
