@@ -1,4 +1,3 @@
-```markdown
 # Dynamic GPU Passthrough Setup (KVM/Libvirt)
 
 This repository contains automated installation scripts and template files to set up dynamic single/dual-GPU passthrough on Linux (specifically CachyOS / Arch / Fedora with KDE Plasma Wayland).
@@ -135,7 +134,3 @@ sudo ./install.sh
 ```
 
 After installation completes, **reboot your PC once** to ensure KDE Plasma loads the updated `/etc/environment` DRM device order and IOMMU kernel parameters.
-
-```
-
-```
