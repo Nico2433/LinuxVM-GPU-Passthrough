@@ -29,14 +29,6 @@ If your system uses **Limine** (common in CachyOS), configure the kernel command
 cmdline: boot=UUID=... quiet splash intel_iommu=on iommu=pt
 ```
 
-
-3. Ensure VFIO modules are loaded at boot:
-```bash
-echo -e "vfio\nvfio_pci\nvfio_iommu_type1" | sudo tee /etc/modules-load.d/vfio.conf
-```
-
-
-
 ---
 
 ## 📋 How to Find Hardware Information for `install.sh`
