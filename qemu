@@ -1,0 +1,14 @@
+#!/bin/bash
+GUEST_NAME=$1
+ACTION=$2
+PHASE=$3
+
+BASE_DIR="/etc/libvirt/hooks/qemu.d/$GUEST_NAME/$ACTION/$PHASE"
+
+if [ -d "$BASE_DIR" ]; then
+    for SCRIPT in "$BASE_DIR"/*.sh; do
+        if [ -x "$SCRIPT" ]; then
+            "$SCRIPT" "$@"
+        fi
+    done
+fi

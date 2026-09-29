@@ -1,0 +1,21 @@
+#!/bin/bash
+set -x
+
+# Unbind passthrough dGPU functions from VFIO
+echo "${PASSTHROUGH_GPU_PCI}.0" > /sys/bus/pci/drivers/vfio-pci/unbind 2>/dev/null || true
+echo "${PASSTHROUGH_GPU_PCI}.1" > /sys/bus/pci/drivers/vfio-pci/unbind 2>/dev/null || true
+
+# Pause to allow GPU power reset cycle
+sleep 2
+
+# Bind audio function first to prevent driver deadlocks
+echo "${PASSTHROUGH_GPU_PCI}.1" > /sys/bus/pci/drivers/${HOST_AUDIO_DRIVER}/bind 2>/dev/null || true
+
+# Bind passthrough dGPU back to native host driver
+echo "${PASSTHROUGH_GPU_PCI}.0" > /sys/bus/pci/drivers/${HOST_GPU_DRIVER}/bind 2>/dev/null || true
+
+# Pause before re-syncing display pipeline
+sleep 1
+
+# Force KWin Wayland compositor to refresh display outputs
+kscreen-doctor --outputs 2>/dev/null || true

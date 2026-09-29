@@ -1,0 +1,21 @@
+#!/bin/bash
+set -x
+
+# Load VFIO modules
+modprobe vfio
+modprobe vfio_pci
+modprobe vfio_iommu_type1
+
+# Sync memory buffers before unbinding
+sync
+
+# Unbind passthrough dGPU and its audio function from Linux host drivers
+echo "${PASSTHROUGH_GPU_PCI}.0" > /sys/bus/pci/drivers/${HOST_GPU_DRIVER}/unbind 2>/dev/null || true
+echo "${PASSTHROUGH_GPU_PCI}.1" > /sys/bus/pci/drivers/${HOST_AUDIO_DRIVER}/unbind 2>/dev/null || true
+
+# Brief pause to allow PCI bus stabilization
+sleep 1
+
+# Bind passthrough dGPU and audio function to VFIO
+echo "${PASSTHROUGH_GPU_PCI}.0" > /sys/bus/pci/drivers/vfio-pci/bind 2>/dev/null || true
+echo "${PASSTHROUGH_GPU_PCI}.1" > /sys/bus/pci/drivers/vfio-pci/bind 2>/dev/null || true
