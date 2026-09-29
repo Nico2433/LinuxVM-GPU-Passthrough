@@ -84,5 +84,3 @@ sudo ./install.sh
 ```
 
 After installation completes, **reboot your PC once** to ensure KDE Plasma loads the updated `/etc/environment` DRM device order.
-
-```
