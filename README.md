@@ -13,7 +13,7 @@ For VFIO device assignment to work properly, IOMMU must be explicitly enabled in
 If your system uses **Limine** (common in CachyOS), configure the kernel command line parameters:
 
 1. Locate your Limine configuration file:
-   ```bash
+```bash
    sudo micro /boot/limine.conf
 
 ```
