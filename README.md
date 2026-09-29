@@ -15,7 +15,6 @@ If your system uses **Limine** (common in CachyOS), configure the kernel command
 1. Locate your Limine configuration file:
 ```bash
    sudo micro /boot/limine.conf
-
 ```
 
 *(Note: If using systemd-boot or GRUB, edit `/boot/loader/entries/` or `/etc/default/grub` respectively).*
@@ -28,14 +27,12 @@ If your system uses **Limine** (common in CachyOS), configure the kernel command
 *Example line:*
 ```text
 cmdline: boot=UUID=... quiet splash intel_iommu=on iommu=pt
-
 ```
 
 
 3. Ensure VFIO modules are loaded at boot:
 ```bash
 echo -e "vfio\nvfio_pci\nvfio_iommu_type1" | sudo tee /etc/modules-load.d/vfio.conf
-
 ```
 
 
@@ -52,7 +49,6 @@ Run the following command to list all graphics cards:
 
 ```bash
 lspci -nn | grep -iE "vga|3d|display"
-
 ```
 
 Example output:
@@ -60,7 +56,6 @@ Example output:
 ```text
 00:02.0 VGA compatible controller [0300]: Intel Corporation UHD Graphics 770
 03:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. Navi 48
-
 ```
 
 Set `PASSTHROUGH_GPU_PCI="0000:03:00"` (Format: `domain:bus:slot` up to `.0`, omit the `.0` suffix).
@@ -74,7 +69,6 @@ Check which kernel driver is actively managing your passthrough GPU:
 ```bash
 lspci -k -s 03:00.0
 lspci -k -s 03:00.1
-
 ```
 
 * **Example output for Video (.0):** `Kernel driver in use: amdgpu` (or `nvidia`, `i915`, etc.)
@@ -90,7 +84,6 @@ Check which DRM card nodes map to your primary host GPU and passthrough GPU:
 
 ```bash
 ls -l /dev/dri/by-path/
-
 ```
 
 Example output:
@@ -98,7 +91,6 @@ Example output:
 ```text
 pci-0000:00:02.0-card -> ../card1   # Host primary iGPU
 pci-0000:03:00.0-card -> ../card0   # Passthrough dGPU
-
 ```
 
 * Set `PRIMARY_DISPLAY_CARD="card1"` (the GPU driving your desktop).
@@ -130,7 +122,6 @@ Make `install.sh` executable and run it with `sudo`:
 ```bash
 chmod +x install.sh
 sudo ./install.sh
-
 ```
 
 After installation completes, **reboot your PC once** to ensure KDE Plasma loads the updated `/etc/environment` DRM device order and IOMMU kernel parameters.
