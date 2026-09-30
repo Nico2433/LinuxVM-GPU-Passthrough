@@ -14,7 +14,7 @@ If your system uses **Limine** (common in CachyOS), configure the kernel command
 
 1. Locate your Limine configuration file:
 ```bash
-   sudo micro /boot/limine.conf
+   sudo nano /boot/limine.conf
 ```
 
 *(Note: If using systemd-boot or GRUB, edit `/boot/loader/entries/` or `/etc/default/grub` respectively).*
