@@ -103,7 +103,6 @@ When using the physical display output of the passthrough GPU connected to a sec
 
 * **Linux Host:** Run Deskflow as a Server.
 * **Windows VM:** Run Deskflow as a Client pointing to the host's local IP or bridge interface.
-* **UAC / Secure Desktop Fix:** In Windows, install Deskflow as a Windows Service to maintain mouse control during Administrator/UAC prompts.
 
 ---
 
